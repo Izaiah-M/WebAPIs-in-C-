@@ -1,0 +1,43 @@
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\appsettings.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\WebApplication Project1.exe
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\WebApplication Project1.deps.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\WebApplication Project1.runtimeconfig.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\WebApplication Project1.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\WebApplication Project1.pdb
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.OpenApi.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.AspNetCore.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Extensions.Hosting.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Extensions.Logging.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Formatting.Compact.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Settings.Configuration.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Sinks.Console.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Sinks.Debug.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Serilog.Sinks.File.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.csproj.AssemblyReference.cache
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.AssemblyInfoInputs.cache
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.AssemblyInfo.cs
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.csproj.CoreCompileInputs.cache
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets\msbuild.WebApplication Project1.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets\msbuild.build.WebApplication Project1.props
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WebApplication Project1.props
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WebApplication Project1.props
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\scopedcss\bundle\WebApplication Project1.styles.css
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.csproj.CopyComplete
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\refint\WebApplication Project1.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.pdb
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\WebApplication Project1.genruntimeconfig.cache
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\obj\Debug\net7.0\ref\WebApplication Project1.dll
