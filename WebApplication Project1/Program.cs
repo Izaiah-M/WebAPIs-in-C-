@@ -25,6 +25,8 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection"))); // Connection string is got from appsettings.json
 
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -34,6 +36,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+// Adding the seed to the DB
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 // Configure the HTTP request pipeline.
 
 //Also configure swagger for dev mode.
