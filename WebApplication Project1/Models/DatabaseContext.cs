@@ -9,7 +9,7 @@ namespace WebApplication_Project1.Models
 {
     public class DatabaseContext : DbContext
     {
-        // Define the context contructor using "contr"
+        // Define the context contructor using "cotr"
         public DatabaseContext(DbContextOptions <DatabaseContext> options) : base(options)
         {
             

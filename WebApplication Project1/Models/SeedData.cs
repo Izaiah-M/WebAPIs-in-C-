@@ -9,7 +9,7 @@ namespace WebApplication_Project1.Models
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using(var context = new DatabaseContext(
+            using (var context = new DatabaseContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<DatabaseContext>>()))
             {
@@ -24,17 +24,17 @@ namespace WebApplication_Project1.Models
                 context.Countries.AddRange(
                     new Country
                     {
-                       
+
                         Name = "Uganda",
                         ShortName = "Ug",
                     },
                     new Country
                     {
-                    
+
                         Name = "Kenya",
                         ShortName = "Ky",
                     }
-                  
+
                 );
 
                 // For the Hotels
@@ -47,16 +47,16 @@ namespace WebApplication_Project1.Models
                 context.Hotels.AddRange(
                     new Hotel
                     {
-                       
+
                         Name = "HotelMe",
-                        Address= "KampalaRd",
+                        Address = "KampalaRd",
                         Rating = 5.5,
                         CountryId = 1,
-         
+
                     },
                     new Hotel
                     {
-                       
+
                         Name = "Shelby Hotel",
                         Address = "KenyaRd",
                         Rating = 4.5,

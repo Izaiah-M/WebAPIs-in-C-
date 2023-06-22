@@ -37,7 +37,7 @@ namespace WebApplication_Project1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("WebApplication_Project1.Models.Hotel", b =>
@@ -64,7 +64,7 @@ namespace WebApplication_Project1.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Hotels", (string)null);
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("WebApplication_Project1.Models.Hotel", b =>
