@@ -48,7 +48,7 @@ namespace WebApplication_Project1.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $" Something went wrong {nameof(GetCountries)}");
+                _logger.LogError(ex.Message, $" Something went wrong {nameof(GetCountries)}");
                 return StatusCode(500, "Internal Server Error, please try again later.");
             }
 

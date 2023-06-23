@@ -53,7 +53,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    SeedData.Initialize(services);
+    // On the very first initialization. But, Only for here, We won't be seeding data a lot in real world
+    // We shall be using data from already existing databases, or have user input new data when consuming our endpoints
+
+    //SeedData.Initialize(services);
 }
 // Configure the HTTP request pipeline.
 
