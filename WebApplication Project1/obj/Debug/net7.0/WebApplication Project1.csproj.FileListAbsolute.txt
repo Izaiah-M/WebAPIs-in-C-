@@ -261,3 +261,5 @@ C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Proj
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\AutoMapper.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

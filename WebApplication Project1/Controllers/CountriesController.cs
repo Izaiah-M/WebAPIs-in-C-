@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication_Project1.DTOs.Country;
 using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.Controllers
@@ -14,10 +16,14 @@ namespace WebApplication_Project1.Controllers
     public class CountriesController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper mapper;
+        private readonly ILogger<CountriesController> _logger;
 
-        public CountriesController(DatabaseContext context)
+        public CountriesController(DatabaseContext context, IMapper mapper, ILogger<CountriesController> logger)
         {
             _context = context;
+            this.mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Countries
@@ -83,15 +89,30 @@ namespace WebApplication_Project1.Controllers
         // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(Country country)
+        public async Task<ActionResult<CountryDTO>> PostCountry(CountryDTO countryDTO)
         {
-          if (_context.Countries == null)
+            // Defining the Country instance to use
+            // Another option to take care of this tedious one is to use the Automapper library
+            /*var country = new Country
+            {
+                Name = countryDTO.Name,
+                ShortName = countryDTO.ShortName
+            };
+            */
+
+            // Using the mapper instead of the above method
+           var country = mapper.Map<Country>(countryDTO);
+
+
+            if (_context.Countries == null)
           {
               return Problem("Entity set 'DatabaseContext.Countries'  is null.");
           }
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation($"Country: {country.Name}, shortName: {country.ShortName}, Id: {country.Id}");
+            
             return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 

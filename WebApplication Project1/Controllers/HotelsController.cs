@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication_Project1.DTOs.Hotel;
 using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.Controllers
@@ -14,10 +17,14 @@ namespace WebApplication_Project1.Controllers
     public class HotelsController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper mapper;
+        private readonly ILogger<HotelsController> _logger;
 
-        public HotelsController(DatabaseContext context)
+        public HotelsController(DatabaseContext context, ILogger<HotelsController> logger, IMapper mapper)
         {
             _context = context;
+            _logger = logger;
+            this.mapper = mapper;
         }
 
         // GET: api/Hotels
@@ -83,14 +90,19 @@ namespace WebApplication_Project1.Controllers
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        public async Task<ActionResult<HotelDTO>> PostHotel(HotelDTO hotelDTO)
         {
+
+            var hotel = mapper.Map<Hotel>(hotelDTO);
+
           if (_context.Hotels == null)
           {
               return Problem("Entity set 'DatabaseContext.Hotels'  is null.");
           }
             _context.Hotels.Add(hotel);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Hotel: {hotel.Name}, Country: {hotel.CountryId}, Id: {hotel.Id}");
 
             return CreatedAtAction(nameof(GetHotel), new { id = hotel.Id }, hotel);
         }

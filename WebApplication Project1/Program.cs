@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog; // For all our logging needs
 using Serilog.Core;
 using System.Linq.Expressions;
+using WebApplication_Project1.Configurations;
 using WebApplication_Project1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection"))); // Connection string is got from appsettings.json
 
+// setting up our mapper with our mapperConfig file from Config folder.
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 
 // Add services to the container.
