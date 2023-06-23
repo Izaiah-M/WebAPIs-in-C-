@@ -1,4 +1,4 @@
-﻿/*using WebApplication_Project1.IRepository;
+﻿using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.Repository
@@ -6,8 +6,8 @@ namespace WebApplication_Project1.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatabaseContext _context;
-        private IGenericRepository<Country> _countries;
-        private IGenericRepository<Hotel> _hotels;
+        private IGenericRepository<Country>? _countries;
+        private IGenericRepository<Hotel>? _hotels;
 
         public UnitOfWork(DatabaseContext context)
         {
@@ -24,11 +24,10 @@ namespace WebApplication_Project1.Repository
             GC.SuppressFinalize(this);
         }
 
-       
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();
         }
     }
 }
-*/

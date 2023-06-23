@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication_Project1.DTOs.Country;
+using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.Controllers
@@ -18,23 +19,39 @@ namespace WebApplication_Project1.Controllers
         private readonly DatabaseContext _context;
         private readonly IMapper mapper;
         private readonly ILogger<CountriesController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CountriesController(DatabaseContext context, IMapper mapper, ILogger<CountriesController> logger)
+        public CountriesController(DatabaseContext context, IUnitOfWork unitOfWork, IMapper mapper, ILogger<CountriesController> logger)
         {
             _context = context;
             this.mapper = mapper;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Countries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
-            return Ok(await _context.Countries.ToListAsync());
+
+            try
+            {
+                /*if (_context.Countries == null)
+                {
+                    return NotFound();
+                }*/
+
+                var countries = await _unitOfWork.CountryRepository.GetAllAsync();
+
+                return Ok(countries);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $" Something went wrong {nameof(GetCountries)}");
+                return StatusCode(500, "Internal Server Error, please try again later.");
+            }
+
         }
 
         // GET: api/Countries/5

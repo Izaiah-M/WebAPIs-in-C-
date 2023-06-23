@@ -1,4 +1,4 @@
-﻿/*using WebApplication_Project1.Models;
+﻿using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.IRepository
 {
@@ -6,10 +6,9 @@ namespace WebApplication_Project1.IRepository
     // As of now we have two tables, so we register them...ie. "Country" and "Hotel"
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<Country> CountryRepository { get;  }
-        IGenericRepository<Hotel> HotelRepository { get;  }
+        IGenericRepository<Country> CountryRepository { get; }
+        IGenericRepository<Hotel> HotelRepository { get; }
 
         Task Save();
     }
 }
-*/

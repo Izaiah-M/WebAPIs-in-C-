@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApplication_Project1.DTOs.Hotel;
 
 namespace WebApplication_Project1.DTOs.Country
 {
@@ -17,5 +18,15 @@ namespace WebApplication_Project1.DTOs.Country
         [Required]
         [StringLength(10)]
         public string? ShortName { get; set; }
+    }
+
+    // Can define a DTO for every method
+    // And use inheritence to reduce workLoad
+    public class GetCountryDTO : CountryDTO
+    {
+        public int Id { get; set; }
+
+        public  IList<HotelDTO>? Hotels { get; set; }
+
     }
 }

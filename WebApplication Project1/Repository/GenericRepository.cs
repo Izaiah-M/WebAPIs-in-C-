@@ -1,4 +1,4 @@
-﻿/*using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
@@ -11,19 +11,21 @@ namespace WebApplication_Project1.Repository
         private readonly DatabaseContext _context;
         private readonly DbSet<T> _db;
 
-        public GenericRepository(DatabaseContext context) {
+        public GenericRepository(DatabaseContext context)
+        {
             _context = context;
-            _db =_context.Set<T>();
+            _db = _context.Set<T>();
         }
-        
-public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, List<string>? includes = null)
+
+        public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, List<string>? includes = null)
         {
             IQueryable<T> query = _db;
 
             //expression refers to like the condition...i.e(get me hotels located in Uganda..thats an expression)
 
-            if (expression != null) { 
-            
+            if (expression != null)
+            {
+
                 query = query.Where(expression);
             }
 
@@ -44,7 +46,7 @@ public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = 
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression, List<string>? includes = null)
+        public async Task<T?> Get(Expression<Func<T, bool>> expression, List<string>? includes = null)
         {
             IQueryable<T> query = _db;
 
@@ -66,7 +68,7 @@ public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = 
 
         public async Task InsertRange(IEnumerable<T> entities)
         {
-         
+
 
             await _db.AddRangeAsync(entities);
 
@@ -76,7 +78,7 @@ public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = 
         {
             var entity = await _db.FindAsync(id);
 
-            if(entity is not null)
+            if (entity is not null)
             {
                 _db.Remove(entity);
             }
@@ -84,9 +86,9 @@ public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = 
 
         public void DeleteRange(IEnumerable<T> entities)
         {
-          
-                _db.RemoveRange(entities);
-        
+
+            _db.RemoveRange(entities);
+
         }
 
         public void Update(T entity)
@@ -98,4 +100,3 @@ public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? expression = 
         }
     }
 }
-*/

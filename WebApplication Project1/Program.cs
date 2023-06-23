@@ -3,7 +3,9 @@ using Serilog; // For all our logging needs
 using Serilog.Core;
 using System.Linq.Expressions;
 using WebApplication_Project1.Configurations;
+using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
+using WebApplication_Project1.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -28,6 +30,12 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 // setting up our mapper with our mapperConfig file from Config folder.
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+// Adding our Unit of Work
+// "AddTransient" - meaning a fresh UnitOfWork will be created everytime an endpoint is hit
+// "AddScopped" - look it up, but not very unfamiliar from AddTransient
+// "Singleton" - Only one instance is created and used whenever an endpoint is hit
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 
 // Add services to the container.

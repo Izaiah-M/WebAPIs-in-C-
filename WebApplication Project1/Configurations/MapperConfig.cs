@@ -12,6 +12,7 @@ namespace WebApplication_Project1.Configurations
         {
             CreateMap<CountryDTO, Country>().ReverseMap();
             CreateMap<HotelDTO, Hotel>().ReverseMap();
+            CreateMap<GetCountryDTO, Country>().ReverseMap();
         }
     }
 }

@@ -12,6 +12,9 @@ namespace WebApplication_Project1.DTOs.Hotel
         [Required]
         [StringLength(50)]
         public string? Address { get; set; }
+
+        [Required]
+        [Range(1, 5)]
         public double Rating { get; set; }
 
         // Id comes first
