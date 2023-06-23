@@ -21,15 +21,14 @@ namespace WebApplication_Project1.Repository
         {
             IQueryable<T> query = _db;
 
-            //expression refers to like the condition...i.e(get me hotels located in Uganda..thats an expression)
-
+            // If someone passes a lambda expression. Make a query in the DB and find what makes that lambda expression true
             if (expression != null)
             {
 
                 query = query.Where(expression);
             }
 
-            // if someone adds the includes in the req...ie this is where we talk about the foreign key(entity) being returned, it brings the info on that foreing entity...ie. id, name, etc etc
+           
             if (includes != null)
             {
                 foreach (var includeProperty in includes)
@@ -46,6 +45,9 @@ namespace WebApplication_Project1.Repository
             return await query.AsNoTracking().ToListAsync();
         }
 
+        // By expression we mean a Lambda expression
+        // So our Get method here takes in an expression, and a list if necessary
+        // You can modify it in any way you like.
         public async Task<T?> Get(Expression<Func<T, bool>> expression, List<string>? includes = null)
         {
             IQueryable<T> query = _db;

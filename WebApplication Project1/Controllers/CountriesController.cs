@@ -12,7 +12,7 @@ using WebApplication_Project1.Models;
 
 namespace WebApplication_Project1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/country")]
     [ApiController]
     public class CountriesController : ControllerBase
     {
@@ -31,23 +31,22 @@ namespace WebApplication_Project1.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult> GetCountries()
         {
 
             try
             {
-                /*if (_context.Countries == null)
-                {
-                    return NotFound();
-                }*/
-
+                
                 var countries = await _unitOfWork.CountryRepository.GetAllAsync();
 
-                return Ok(countries);
+                var results = mapper.Map<List<GetCountryDTO>>(countries);
+
+                return Ok(results);
 
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 _logger.LogError(ex.Message, $" Something went wrong {nameof(GetCountries)}");
                 return StatusCode(500, "Internal Server Error, please try again later.");
             }
@@ -55,21 +54,23 @@ namespace WebApplication_Project1.Controllers
         }
 
         // GET: api/Countries/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetCountry(int id)
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
-            var country = await _context.Countries.FindAsync(id);
-
-            if (country == null)
+            try
             {
-                return NotFound();
-            }
+                var country = await _unitOfWork.CountryRepository.Get(c => c.Id == id, new List<string> { "Hotels" });
+                
+                var result = mapper.Map<GetCountryDTO>(country);
 
-            return country;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.Message, $" Something went wrong {nameof(GetCountries)}");
+                return StatusCode(500, "Internal Server Error, please try again later.");
+            }
         }
 
         // PUT: api/Countries/5
