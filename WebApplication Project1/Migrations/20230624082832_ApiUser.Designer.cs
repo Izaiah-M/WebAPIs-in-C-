@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication_Project1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication_Project1.Models;
 namespace WebApplication_Project1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230624082832_ApiUser")]
+    partial class ApiUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,10 +32,6 @@ namespace WebApplication_Project1.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -51,10 +50,6 @@ namespace WebApplication_Project1.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -280,47 +275,6 @@ namespace WebApplication_Project1.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Hotels");
-                });
-
-            modelBuilder.Entity("WebApplication_Project1.Models.ApiRoles", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.Property<string>("AccessLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ApiRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "53fc64bf-cb3c-414d-8167-6d2614b28aee",
-                            Name = "Super Administrator",
-                            NormalizedName = "SUPER ADMINISTRATOR",
-                            AccessLevel = "/[\"admin dashboard/\", \"hotel dashboard\", \"user dashboard\"]",
-                            Description = "Super Admin role"
-                        },
-                        new
-                        {
-                            Id = "453fb60f-3271-45b2-b183-c2d06201add6",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR",
-                            AccessLevel = "/[\"admin dashboard/\"]",
-                            Description = "Admin role"
-                        },
-                        new
-                        {
-                            Id = "76671baf-3c76-4c11-b635-8efe754775dd",
-                            Name = "User",
-                            NormalizedName = "USER",
-                            AccessLevel = "/[\"user dashboard/\"]",
-                            Description = "customer role"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

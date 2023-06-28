@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WebApplication_Project1.DTOs;
 using WebApplication_Project1.DTOs.Country;
 using WebApplication_Project1.DTOs.Hotel;
 using WebApplication_Project1.Models;
@@ -13,6 +14,12 @@ namespace WebApplication_Project1.Configurations
             CreateMap<CountryDTO, Country>().ReverseMap();
             CreateMap<HotelDTO, Hotel>().ReverseMap();
             CreateMap<GetCountryDTO, Country>().ReverseMap();
+
+            // Register and Login DTOs being mapped
+            CreateMap<UserDTO, ApiUser>().ReverseMap();
+
+            // Don't need to let the mapper know about the LoginDTO
+            // CreateMap<LoginDTO, ApiUser>().ReverseMap();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace WebApplication_Project1.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Countries
+        // GET: api/countries
         [HttpGet]
         public async Task<ActionResult> GetCountries()
         {
@@ -53,7 +53,7 @@ namespace WebApplication_Project1.Controllers
 
         }
 
-        // GET: api/Countries/5
+        // GET: api/countries/5
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetCountry(int id)
         {
@@ -73,7 +73,7 @@ namespace WebApplication_Project1.Controllers
             }
         }
 
-        // PUT: api/Countries/5
+        // PUT: api/countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountry(int id, Country country)
@@ -104,7 +104,7 @@ namespace WebApplication_Project1.Controllers
             return NoContent();
         }
 
-        // POST: api/Countries
+        // POST: api/countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<CountryDTO>> PostCountry(CountryDTO countryDTO)
@@ -134,7 +134,7 @@ namespace WebApplication_Project1.Controllers
             return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 
-        // DELETE: api/Countries/5
+        // DELETE: api/countries/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {

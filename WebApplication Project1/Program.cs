@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog; // For all our logging needs
 using Serilog.Core;
@@ -45,19 +46,40 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// Addding Identity core with our user class
+builder.Services.AddAuthentication();
+
+/*var identityCore = builder.Services.AddIdentityCore<ApiUser>(user => user.User.RequireUniqueEmail = true);
+
+identityCore = new IdentityBuilder(identityCore.UserType, typeof(IdentityRole), builder.Services);
+
+identityCore.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();*/
+
+builder.Services.AddIdentity<ApiUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
 
 
-// Adding the seed to the DB
-using (var scope = app.Services.CreateScope())
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    var services = scope.ServiceProvider;
+    // Lockout settings.
+    options.Lockout.MaxFailedAccessAttempts = 5;
+
+    // User settings.
+    options.User.RequireUniqueEmail = true;
+});
+
+
+var app = builder.Build();
+// Adding the seed to the DB
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
     // On the very first initialization. But, Only for here, We won't be seeding data a lot in real world
     // We shall be using data from already existing databases, or have user input new data when consuming our endpoints
 
     //SeedData.Initialize(services);
-}
+// }
 // Configure the HTTP request pipeline.
 
 //Also configure swagger for dev mode.
@@ -83,6 +105,7 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

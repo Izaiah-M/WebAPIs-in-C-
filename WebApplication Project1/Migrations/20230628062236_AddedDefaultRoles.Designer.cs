@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication_Project1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication_Project1.Models;
 namespace WebApplication_Project1.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230628062236_AddedDefaultRoles")]
+    partial class AddedDefaultRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,10 +289,6 @@ namespace WebApplication_Project1.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
-                    b.Property<string>("AccessLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -299,26 +298,23 @@ namespace WebApplication_Project1.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "53fc64bf-cb3c-414d-8167-6d2614b28aee",
+                            Id = "8baa9b1f-c8ed-44d3-b388-6678421c06e7",
                             Name = "Super Administrator",
                             NormalizedName = "SUPER ADMINISTRATOR",
-                            AccessLevel = "/[\"admin dashboard/\", \"hotel dashboard\", \"user dashboard\"]",
                             Description = "Super Admin role"
                         },
                         new
                         {
-                            Id = "453fb60f-3271-45b2-b183-c2d06201add6",
+                            Id = "d003cf97-56e8-4baf-9f99-b19614d0078b",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR",
-                            AccessLevel = "/[\"admin dashboard/\"]",
                             Description = "Admin role"
                         },
                         new
                         {
-                            Id = "76671baf-3c76-4c11-b635-8efe754775dd",
+                            Id = "809d019a-18e7-4916-8ad0-1225cb947080",
                             Name = "User",
                             NormalizedName = "USER",
-                            AccessLevel = "/[\"user dashboard/\"]",
                             Description = "customer role"
                         });
                 });

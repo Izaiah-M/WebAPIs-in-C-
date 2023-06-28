@@ -8,6 +8,7 @@ namespace WebApplication_Project1.Repository
         private readonly DatabaseContext _context;
         private IGenericRepository<Country>? _countries;
         private IGenericRepository<Hotel>? _hotels;
+        //private IGenericRepository<ApiUser>? _users;
 
         public UnitOfWork(DatabaseContext context)
         {
@@ -17,6 +18,8 @@ namespace WebApplication_Project1.Repository
         public IGenericRepository<Country> CountryRepository => _countries ??= new GenericRepository<Country>(_context);
 
         public IGenericRepository<Hotel> HotelRepository => _hotels ??= new GenericRepository<Hotel>(_context);
+
+        //public IGenericRepository<ApiUser> UserRepository => _users ??= new GenericRepository<ApiUser>(_context);
 
         public void Dispose()
         {
