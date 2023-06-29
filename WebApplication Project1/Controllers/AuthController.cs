@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication_Project1.DTOs;
 using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
+using WebApplication_Project1.Services;
 
 namespace WebApplication_Project1.Controllers
 {
@@ -15,14 +16,16 @@ namespace WebApplication_Project1.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuthManager _authManager;
+        private ApiUser? _user;
 
-        public AuthController(ILogger<AuthController> logger, IMapper mapper, IUnitOfWork unitOfWork, UserManager<ApiUser> userManager)
+        public AuthController(ILogger<AuthController> logger, IAuthManager authManager, IMapper mapper, IUnitOfWork unitOfWork, UserManager<ApiUser> userManager)
         {
             _logger = logger;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
-
+            _authManager = authManager;
         }
 
         [HttpPost]
@@ -75,50 +78,59 @@ namespace WebApplication_Project1.Controllers
                 return Problem($"Something went wrong, {nameof(Register)}", statusCode: 500);
             }  
         }
-        /*
-                [HttpPost]
-                [Route("login")]
-                public async Task<ActionResult> Login([FromBody] LoginDTO userDTO)
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult> Login([FromBody] LoginDTO userDTO)
+        {
+            _logger.LogInformation($"Logging in; Email: {userDTO.Email}, Password: {userDTO.Password}");
+
+            if (userDTO.Email == null || userDTO.Password == null)
+            {
+                _logger.LogInformation($"Missing Fields Email: {userDTO.Email} password: {userDTO.Password}");
+                return BadRequest("Missing fields");
+            }
+
+            // This here will go ahead to see other requirements I made in the user DTO and varify them
+            if (!ModelState.IsValid)
+            {
+                _logger.LogInformation($"Invalid fields Email: {userDTO.Email} password: {userDTO.Password}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                
+              if(!await _authManager.ValidateUser(userDTO))
                 {
-                    _logger.LogInformation($"Logging in; Email: {userDTO.Email}, Password: {userDTO.Password}");
+                    _logger.LogInformation($"Unauthorized Username: {userDTO.Email}, Password: {userDTO.Password}");
+                    return Unauthorized("Invalid Username or Password");
+                }
 
-                    if (userDTO.Email == null || userDTO.Password == null)
-                    {
-                        _logger.LogInformation($"Missing Fields Email: {userDTO.Email} password: {userDTO.Password}");
-                        return BadRequest("Missing fields");
-                    }
+                _user = await _userManager.FindByNameAsync(userDTO.Email);
 
-                    // This here will go ahead to see other requirements I made in the user DTO and varify them
-                    if (!ModelState.IsValid)
-                    {
-                        _logger.LogInformation($"Invalid fields Email: {userDTO.Email} password: {userDTO.Password}");
-                        return BadRequest(ModelState);
-                    }
+                var user = new
+                {
+                    firstName = _user?.FirstName,
+                    lastName = _user?.LastName,
+                    id = _user?.Id,
+                    userName = _user?.UserName,
+                    email = _user?.Email,
+                    phoneNumber = _user?.PhoneNumber,
+                    accessFailedCount = _user?.AccessFailedCount,
+                    Token = await _authManager.CreateToken()
+                };
 
-                    try
-                    {
-                        // we are going to use the signin manager to help sign in
-                        var result = await _signInManager.PasswordSignInAsync(userDTO.Email, userDTO.Password, false, false);
+                return Accepted(user);
 
-                        if (!result.Succeeded)
-                        {
-                            _logger.LogInformation($"User registration failed Email: {userDTO.Email}, Password: {userDTO.Password}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Something went wrong, {nameof(Login)} ", ex);
 
-                            return Unauthorized("Invalid Password or Username");
-                        }
-
-                        _logger.LogInformation($"User: {userDTO.Email} signed in");
-
-                        return Ok("User successfully signed in");
-
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogInformation($"Something went wrong, {nameof(Login)} ", ex);
-
-                        return Problem($"Something went wrong, {nameof(Login)}", statusCode: 500);
-                    }
-                }*/
+                return Problem($"Something went wrong, {nameof(Login)}", statusCode: 500);
+            }
+        }
 
     }
 }

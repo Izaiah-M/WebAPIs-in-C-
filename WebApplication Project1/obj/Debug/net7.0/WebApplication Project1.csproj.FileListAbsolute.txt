@@ -269,3 +269,4 @@ C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Proj
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\HP\OneDrive\Desktop\ASP.NET\WebApplication Project1\WebApplication Project1\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

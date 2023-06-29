@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Serilog; // For all our logging needs
 using Serilog.Core;
 using System.Linq.Expressions;
+using WebApplication_Project1;
 using WebApplication_Project1.Configurations;
 using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
 using WebApplication_Project1.Repository;
+using WebApplication_Project1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -37,7 +41,46 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 // "AddScopped" - look it up, but not very unfamiliar from AddTransient
 // "Singleton" - Only one instance is created and used whenever an endpoint is hit
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+// Adding our authmanager
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
+AddSwaggerDoc(builder.Services);
+
+void AddSwaggerDoc(IServiceCollection services)
+{
+    // Configuring swagger to help take in Token
+    // But you can do without this and just use Postman...this is just for the luxury
+    services.AddSwaggerGen(op =>
+    {
+        op.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Description = @"Jwt Authorization header using Bearer scheme. Enter 'Bearer' [space] and then your token in the text input Below 
+                Example: 'Bearer 123thuwi'",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
+        });
+
+        op.AddSecurityRequirement(new OpenApiSecurityRequirement()
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "Oauth2",
+                    Name = " Bearer",
+                    In = ParameterLocation.Header
+                },
+                new List<string>()
+            }
+        });
+    });
+}
 
 // Add services to the container.
 
@@ -48,17 +91,11 @@ builder.Services.AddSwaggerGen();
 
 // Addding Identity core with our user class
 builder.Services.AddAuthentication();
-
-/*var identityCore = builder.Services.AddIdentityCore<ApiUser>(user => user.User.RequireUniqueEmail = true);
-
-identityCore = new IdentityBuilder(identityCore.UserType, typeof(IdentityRole), builder.Services);
-
-identityCore.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();*/
-
+// This can be added to our ServiceExtensions class like for JWT
 builder.Services.AddIdentity<ApiUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
 
-
+/*
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Lockout settings.
@@ -66,8 +103,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     // User settings.
     options.User.RequireUniqueEmail = true;
-});
+});*/
 
+builder.Services.ConfigureJWT(builder.Configuration);
 
 var app = builder.Build();
 // Adding the seed to the DB

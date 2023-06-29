@@ -4,132 +4,102 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using WebApplication_Project1.DTOs;
 using WebApplication_Project1.DTOs.Hotel;
+using WebApplication_Project1.IRepository;
 using WebApplication_Project1.Models;
+using WebApplication_Project1.Repository;
 
 namespace WebApplication_Project1.Controllers
 {
-    [Route("api/[controller]")]
+    
+    [Route("api/hotels")]
     [ApiController]
     public class HotelsController : ControllerBase
     {
-        private readonly DatabaseContext _context;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         private readonly ILogger<HotelsController> _logger;
 
-        public HotelsController(DatabaseContext context, ILogger<HotelsController> logger, IMapper mapper)
+        public HotelsController(IUnitOfWork unitOfWork, ILogger<HotelsController> logger, IMapper mapper)
         {
-            _context = context;
-            _logger = logger;
-            this.mapper = mapper;
+            _unitOfWork = unitOfWork;
+             _logger = logger;
+            _mapper = mapper;
         }
 
-        // GET: api/Hotels
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+     
+        [Authorize(Roles = "Super Administrator")]
+        [HttpPost]
+        [Route("create-hotel")]
+        public async Task<IActionResult> CreateHotel([FromBody] HotelDTO hotelDTO)
         {
-          if (_context.Hotels == null)
-          {
-              return NotFound();
-          }
-            return await _context.Hotels.ToListAsync();
-        }
 
-        // GET: api/Hotels/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Hotel>> GetHotel(int id)
-        {
-          if (_context.Hotels == null)
-          {
-              return NotFound();
-          }
-            var hotel = await _context.Hotels.FindAsync(id);
-
-            if (hotel == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                _logger.LogInformation($"Missing Fields Address: {hotelDTO.Address} Name: {hotelDTO.Name} Rating: {hotelDTO.Address}");
+                return BadRequest(ModelState);
             }
-
-            return hotel;
-        }
-
-        // PUT: api/Hotels/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
-        {
-            if (id != hotel.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(hotel).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                var hotel = _mapper.Map<Hotel>(hotelDTO);
+
+                await _unitOfWork.HotelRepository.Insert(hotel);
+
+                await _unitOfWork.Save();
+
+                return Created("Hotel successfully created", hotel);
+
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!HotelExists(id))
+
+                _logger.LogInformation($"Something went wrong, {nameof(CreateHotel)} ", ex);
+
+                return Problem($"Something went wrong, {nameof(CreateHotel)}", statusCode: 500);
+            }
+
+        }
+
+        [Authorize(Roles = "Super Administrator")]
+        [HttpPut("{id:int}")]
+        [Route("update-hotel")]
+        public async Task<IActionResult> UpdateHotel(int id, [FromBody] UpdateHotelDTO hotelDTO)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+
+                var hotel = await _unitOfWork.HotelRepository.Get(h => h.Id == id);
+
+                if(hotel == null)
                 {
-                    return NotFound();
+                    return BadRequest("Hotel not Found");
                 }
-                else
-                {
-                    throw;
-                }
+
+                _mapper.Map(hotelDTO, hotel);
+                _unitOfWork.HotelRepository.Update(hotel);
+                await _unitOfWork.Save();
+
+                return Created("Updated Hotel", hotel);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Hotels
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<HotelDTO>> PostHotel(HotelDTO hotelDTO)
-        {
-
-            var hotel = mapper.Map<Hotel>(hotelDTO);
-
-          if (_context.Hotels == null)
-          {
-              return Problem("Entity set 'DatabaseContext.Hotels'  is null.");
-          }
-            _context.Hotels.Add(hotel);
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation($"Hotel: {hotel.Name}, Country: {hotel.CountryId}, Id: {hotel.Id}");
-
-            return CreatedAtAction(nameof(GetHotel), new { id = hotel.Id }, hotel);
-        }
-
-        // DELETE: api/Hotels/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHotel(int id)
-        {
-            if (_context.Hotels == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogInformation($"Something went wrong, {nameof(UpdateHotel)} ", ex);
+
+                return Problem("Something went wrong", statusCode: 500);
             }
-            var hotel = await _context.Hotels.FindAsync(id);
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-
-            _context.Hotels.Remove(hotel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool HotelExists(int id)
-        {
-            return (_context.Hotels?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
