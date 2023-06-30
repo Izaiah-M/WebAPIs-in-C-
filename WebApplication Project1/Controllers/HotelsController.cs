@@ -57,7 +57,7 @@ namespace WebApplication_Project1.Controllers
 
                 return Created("Hotel successfully created", hotel);
 
-            
+
         }
 
         [Authorize(Roles = "Super Administrator")]

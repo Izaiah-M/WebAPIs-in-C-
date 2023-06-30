@@ -107,6 +107,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.ConfigureJWT(builder.Configuration);
 
+// Adding the caching service
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 // Adding the seed to the DB
 //using (var scope = app.Services.CreateScope())
@@ -145,6 +148,9 @@ app.UseSerilogRequestLogging();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
+
+//Setting up our caching mechanism
+app.UseResponseCaching();
 
 app.UseAuthentication();
 app.UseAuthorization();

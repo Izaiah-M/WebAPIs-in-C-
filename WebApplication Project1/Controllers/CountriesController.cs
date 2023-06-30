@@ -31,25 +31,22 @@ namespace WebApplication_Project1.Controllers
 
         // GET: api/countries
         [HttpGet]
+        // Adding Caching abilities to our application
+        [ResponseCache(Duration = 60)] // setting up cache control that will last 60seconds
         public async Task<ActionResult> GetCountries()
         {
 
-            try
-            {
-                
-                var countries = await _unitOfWork.CountryRepository.GetAllAsync();
+            // Removed the try catch to test our Global exception Handler
 
-                var results = mapper.Map<List<GetCountryDTO>>(countries);
+            //throw new Exception();
 
-                return Ok(results);
+            var countries = await _unitOfWork.CountryRepository.GetAllAsync();
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                _logger.LogError(ex.Message, $" Something went wrong {nameof(GetCountries)}");
-                return StatusCode(500, "Internal Server Error, please try again later.");
-            }
+            var results = mapper.Map<List<GetCountryDTO>>(countries);
+
+            return Ok(results);
+
+
 
         }
 
@@ -57,20 +54,14 @@ namespace WebApplication_Project1.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetCountry(int id)
         {
-            try
-            {
-                var country = await _unitOfWork.CountryRepository.Get(c => c.Id == id, new List<string> { "Hotels" });
-                
-                var result = mapper.Map<GetCountryDTO>(country);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
+            var country = await _unitOfWork.CountryRepository.Get(c => c.Id == id, new List<string> { "Hotels" });
 
-                _logger.LogError(ex.Message, $" Something went wrong {nameof(GetCountries)}");
-                return StatusCode(500, "Internal Server Error, please try again later.");
-            }
+            var result = mapper.Map<GetCountryDTO>(country);
+
+            return Ok(result);
+
+
         }
 
         // PUT: api/countries/5
@@ -85,20 +76,12 @@ namespace WebApplication_Project1.Controllers
 
             _context.Entry(country).State = EntityState.Modified;
 
-            try
+
+            await _context.SaveChangesAsync();
+
+            if (!CountryExists(id))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -119,18 +102,18 @@ namespace WebApplication_Project1.Controllers
             */
 
             // Using the mapper instead of the above method
-           var country = mapper.Map<Country>(countryDTO);
+            var country = mapper.Map<Country>(countryDTO);
 
 
             if (_context.Countries == null)
-          {
-              return Problem("Entity set 'DatabaseContext.Countries'  is null.");
-          }
+            {
+                return Problem("Entity set 'DatabaseContext.Countries'  is null.");
+            }
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
             _logger.LogInformation($"Country: {country.Name}, shortName: {country.ShortName}, Id: {country.Id}");
-            
+
             return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 
