@@ -26,6 +26,6 @@ namespace WebApplication_Project1.DTOs.Hotel
 
     public class UpdateHotelDTO : HotelDTO
     {
-        public required int Id { get; set; }
+   
     }
 }

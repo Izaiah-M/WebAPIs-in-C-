@@ -11,9 +11,13 @@ namespace WebApplication_Project1.Configurations
     {
         public MapperConfig()
         {
+            // Country DTOs
             CreateMap<CountryDTO, Country>().ReverseMap();
-            CreateMap<HotelDTO, Hotel>().ReverseMap();
             CreateMap<GetCountryDTO, Country>().ReverseMap();
+
+            // Hotel DTOs
+            CreateMap<HotelDTO, Hotel>().ReverseMap();
+            CreateMap<UpdateHotelDTO, Hotel>().ReverseMap();
 
             // Register and Login DTOs being mapped
             CreateMap<UserDTO, ApiUser>().ReverseMap();

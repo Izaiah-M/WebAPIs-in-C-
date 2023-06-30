@@ -69,7 +69,6 @@ namespace WebApplication_Project1.Controllers
 
         [Authorize(Roles = "Super Administrator")]
         [HttpPut("{id:int}")]
-        [Route("update-hotel")]
         public async Task<IActionResult> UpdateHotel(int id, [FromBody] UpdateHotelDTO hotelDTO)
         {
             if (!ModelState.IsValid || id < 1)
@@ -83,7 +82,7 @@ namespace WebApplication_Project1.Controllers
 
                 var hotel = await _unitOfWork.HotelRepository.Get(h => h.Id == id);
 
-                if(hotel == null)
+                if (hotel == null)
                 {
                     return BadRequest("Hotel not Found");
                 }
@@ -98,7 +97,7 @@ namespace WebApplication_Project1.Controllers
             {
                 _logger.LogInformation($"Something went wrong, {nameof(UpdateHotel)} ", ex);
 
-                return Problem("Something went wrong", statusCode: 500);
+                return Problem("Internal server Error, please try again later", statusCode: 500);
             }
         }
     }
