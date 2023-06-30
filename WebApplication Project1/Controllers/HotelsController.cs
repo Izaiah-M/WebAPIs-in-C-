@@ -40,14 +40,15 @@ namespace WebApplication_Project1.Controllers
         public async Task<IActionResult> CreateHotel([FromBody] HotelDTO hotelDTO)
         {
 
+            // We are not using a try-catch block because we have a global error handler configured in our "ServiceExtensions class"
+
             if (!ModelState.IsValid)
             {
                 _logger.LogInformation($"Missing Fields Address: {hotelDTO.Address} Name: {hotelDTO.Name} Rating: {hotelDTO.Address}");
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+            
                 var hotel = _mapper.Map<Hotel>(hotelDTO);
 
                 await _unitOfWork.HotelRepository.Insert(hotel);
@@ -57,14 +58,6 @@ namespace WebApplication_Project1.Controllers
                 return Created("Hotel successfully created", hotel);
 
             }
-            catch (Exception ex)
-            {
-
-                _logger.LogInformation($"Something went wrong, {nameof(CreateHotel)} ", ex);
-
-                return Problem($"Something went wrong, {nameof(CreateHotel)}", statusCode: 500);
-            }
-
         }
 
         [Authorize(Roles = "Super Administrator")]
@@ -96,6 +89,39 @@ namespace WebApplication_Project1.Controllers
             catch (Exception ex)
             {
                 _logger.LogInformation($"Something went wrong, {nameof(UpdateHotel)} ", ex);
+
+                return Problem("Internal server Error, please try again later", statusCode: 500);
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteHotel(int id)
+        {
+            if (id < 1)
+            {
+
+                return BadRequest("Hotel does not exist");
+            }
+
+            try
+            {
+
+                var hotel = await _unitOfWork.HotelRepository.Get(h => h.Id == id);
+
+                if (hotel == null)
+                {
+                    return BadRequest("Hotel not Found");
+                }
+
+                await _unitOfWork.HotelRepository.Delete(id);
+
+                await _unitOfWork.Save();
+
+                return Ok($"Successfully deleted {hotel.Name}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Something went wrong, {nameof(DeleteHotel)} ", ex);
 
                 return Problem("Internal server Error, please try again later", statusCode: 500);
             }

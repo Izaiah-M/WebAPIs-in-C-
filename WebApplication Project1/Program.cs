@@ -132,6 +132,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Configuring our custom built Global exception handler
+app.ConfigureExceptionHandler();
+
 // Using serilogger for the requests
 app.UseSerilogRequestLogging();
 
