@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,14 @@ using WebApplication_Project1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+// Adding Throttling abilities
+
+// This is to keep track of which Client has made the request.
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimitting();
+builder.Services.AddHttpContextAccessor();
 
 // Adding CORS
 builder.Services.AddCors(options =>
@@ -161,6 +170,8 @@ app.UseHttpsRedirection();
 //Setting up our caching mechanism
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
+//Configuring throttling
+app.UseIpRateLimiting();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,4 +1,5 @@
-﻿using Marvin.Cache.Headers;
+﻿using AspNetCoreRateLimit;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
@@ -82,6 +83,30 @@ namespace WebApplication_Project1
             }
 
             );
+        }
+
+        public static void ConfigureRateLimitting(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule> { 
+                
+                // So what this means is that to all the endpoints
+                // All endpoints are limited to one(1) call every 10seconds
+                new RateLimitRule {
+                    Endpoint = "*",
+                    Limit = 1,
+                    Period = "10s"
+                
+                } 
+            };
+
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
     }
 }

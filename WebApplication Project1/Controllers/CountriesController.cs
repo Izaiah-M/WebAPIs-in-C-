@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,8 @@ namespace WebApplication_Project1.Controllers
         [HttpGet]
         // Adding Caching abilities to our application
         // This can be removed because in our Program.cs and servicExtensions.cs we have made caching global.
-        [ResponseCache(CacheProfileName = "120SecondsDuration")] // setting up cache control that will last 60seconds
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)] // Overriding the global caching settings that have been set up if there is need to
+        [HttpCacheValidation(MustRevalidate = false)] // Overriding cache setting for validating when the data in the Database changes.
         public async Task<ActionResult> GetCountries()
         {
 
