@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -84,7 +85,15 @@ void AddSwaggerDoc(IServiceCollection services)
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.ConfigureHttpCacheHeaders();
+
+builder.Services.AddControllers(config =>
+{
+    config.CacheProfiles.Add("120SecondsDuration", new CacheProfile
+    {
+        Duration = 120
+    });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -151,6 +160,7 @@ app.UseHttpsRedirection();
 
 //Setting up our caching mechanism
 app.UseResponseCaching();
+app.UseHttpCacheHeaders();
 
 app.UseAuthentication();
 app.UseAuthorization();

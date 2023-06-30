@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -36,8 +37,9 @@ namespace WebApplication_Project1
         }
 
         // Setting up how we want our exception handling to occur
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app) {
-            app.UseExceptionHandler( error =>
+        public static void ConfigureExceptionHandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(error =>
             {
                 error.Run(async context =>
                 {
@@ -57,6 +59,29 @@ namespace WebApplication_Project1
                     }
                 });
             });
+        }
+
+        // Don't forget to first download the necessary package before you do this one
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services)
+        {
+
+            // This is so the API sends caching info in the headers back the client
+            // Such that in the event that the DB gets updated whille the client is using cached data
+            // The app will know when to make a new call to the DB so that the client is not getting stale data.
+
+            services.AddResponseCaching();
+            services.AddHttpCacheHeaders(expOpt =>
+            {
+                expOpt.MaxAge = 65;
+                expOpt.CacheLocation = CacheLocation.Private;
+            },
+
+            (validationOpt) =>
+            {
+                validationOpt.MustRevalidate = true;
+            }
+
+            );
         }
     }
 }

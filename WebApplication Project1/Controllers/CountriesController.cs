@@ -32,7 +32,8 @@ namespace WebApplication_Project1.Controllers
         // GET: api/countries
         [HttpGet]
         // Adding Caching abilities to our application
-        [ResponseCache(Duration = 60)] // setting up cache control that will last 60seconds
+        // This can be removed because in our Program.cs and servicExtensions.cs we have made caching global.
+        [ResponseCache(CacheProfileName = "120SecondsDuration")] // setting up cache control that will last 60seconds
         public async Task<ActionResult> GetCountries()
         {
 
